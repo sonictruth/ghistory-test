@@ -25,9 +25,9 @@ class App extends Component {
     console.log(this.state.locations);
   }
   render() {
-    return (
-      <div className="App">
+    return (<div className="App">
         {this.state.isLoading ? 'Loading...' : `Loaded ${this.state.locations.length} locations.`}
+        {this.state.locations.length > 2 ? new Date(this.state.locations[this.state.locations.length-1].t).toString() : ''  }
       </div>
     );
   }
