@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import pako from 'pako';
+import GenericWorker from './generic.worker';
 
-const dataUrl = 'data.txt';
+const locationsDataUrl = './locations.json';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -11,18 +11,18 @@ class App extends Component {
       isLoading: false
     };
   }
-  decompressResponse(response) {
-    pako.inflate(window.atob(response), { to: 'string' })
-  }
+
   componentDidMount() {
+    const genericWorker = new GenericWorker();
+    genericWorker.postMessage('test');
     this.setState({ isLoading: true });
-    fetch(dataUrl)
-      .then(response => response.text())
-      .then(this.decompressResponse)
-      .catch(() => this.setState({ isLoading: false }));
+    fetch(locationsDataUrl)
+      .then(response => response.json())
+      .then((locations) => this.setState({ locations }))
+      .finally(() => this.setState({ isLoading: false }));
   }
   componentDidUpdate() {
-    this.state.locations.filter(location => location.latitudeE7 === 1);
+    console.log(this.state.locations);
   }
   render() {
     return (
