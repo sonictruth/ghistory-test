@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import GenericWorker from './generic.worker';
+import { GoogleMap, Marker } from 'react-google-maps';
 
 const locationsDataUrl = './locations.json';
 class App extends Component {
@@ -24,11 +25,24 @@ class App extends Component {
   componentDidUpdate() {
     console.log(this.state.locations);
   }
+  getLocationList(locations) {
+    if (locations.length > 0) {
+      const oldestRecord = locations[locations.length - 1];
+      const oldestDate = (new Date(oldestRecord.t)).toString();
+      return (
+        <div>Oldest record: {oldestDate}</div>
+      );
+    } else {
+      return '';
+    }
+  }
   render() {
     return (<div className="App">
-        {this.state.isLoading ? 'Loading...' : `Loaded ${this.state.locations.length} locations.`}
-        {this.state.locations.length > 2 ? new Date(this.state.locations[this.state.locations.length-1].t).toString() : ''  }
+      {this.state.isLoading ? 'Loading...' : `Loaded ${this.state.locations.length} locations.`}
+      <div>
+        {this.getLocationList(this.state.locations)}
       </div>
+    </div>
     );
   }
 }
