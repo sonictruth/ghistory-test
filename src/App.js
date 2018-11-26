@@ -34,16 +34,16 @@ class App extends Component {
   }
 
   startTimer() {
-    let state;
     const time = 100;
     const speed = 20;
-    if (this.state.currentIndex <= 0) {
-      state = { currentIndex: this.state.locations.length -1 };
-    } else {
-      state = { currentIndex: this.state.currentIndex - speed };
+    let currentIndex = 0;
+    if (this.state.locations.length > 0) {
+      currentIndex = this.state.currentIndex + speed;
     }
-
-    this.setState(state);
+    if(currentIndex > this.state.locations.length) {
+      currentIndex = 0;
+    }
+    this.setState({ currentIndex });
     setTimeout(() => this.startTimer(), time);
   }
   getCurrentView() {
