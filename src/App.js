@@ -11,6 +11,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+    this.lastLocation = [0,0];
     this.state = {
       locations: [],
       currentIndex: 0,
@@ -36,7 +37,7 @@ class App extends Component {
   startTimer() {
     let state;
     const time = 100;
-    const speed = 30;
+    const speed = 20;
     if (this.state.currentIndex <= 0) {
       state = { currentIndex: this.state.locations.length -1 };
     } else {
@@ -75,15 +76,22 @@ class App extends Component {
   getMap(position) {
     const mapStyle = { width: '100%', margin: 'auto', height: '600px' };
     const zoom = 12;
+    const markerPosition = position;
+    const mapPosition = [
+      parseInt(this.lastLocation[0]) !== parseInt(position[0]) ? position[0] :this.lastLocation[0],
+      parseInt(this.lastLocation[1]) !== parseInt(position[1]) ? position[1] :this.lastLocation[1],
+    ];
+    this.lastLocation = mapPosition;
+    console.log(mapPosition);
     return (
-      <Map center={position} zoom={zoom} style={mapStyle}>
+      <Map center={mapPosition} zoom={zoom} style={mapStyle}>
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={position}>
+        <Marker position={markerPosition}>
           <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
+            Last location.
           </Popup>
         </Marker>
       </Map>
